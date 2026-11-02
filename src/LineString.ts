@@ -16,6 +16,15 @@ export default class LineString implements Geometry {
     return this.points.length === 0;
   }
 
+  translate(dx: number, dy: number): LineString {
+    const translatedPoints = this.points.map((point) => {
+      const x = point.x() + dx;
+      const y = point.y() + dy;
+      return new Point([x, y]);
+    });
+    return new LineString(translatedPoints);
+  }
+
   getNumPoints(): number {
     return this.points.length;
   }
