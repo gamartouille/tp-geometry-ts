@@ -1,0 +1,3 @@
+interface Geometry {
+    getType(): string;
+}

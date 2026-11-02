@@ -1,10 +1,14 @@
 import Point from "./Point";
 
-export default class LineString {
+export default class LineString implements Geometry {
   private point?: Point;
 
   constructor(point?: Point) {
     this.point = point ;
+  }
+
+  getType(): string {
+    return "LineString";
   }
 
   getNumPoints(): Number {
