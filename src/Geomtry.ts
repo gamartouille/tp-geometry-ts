@@ -1,3 +1,7 @@
 interface Geometry {
-    getType(): string;
+  getType(): string;
+  isEmpty(): boolean;
 }
+
+export default Geometry;
+

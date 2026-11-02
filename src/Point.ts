@@ -1,14 +1,19 @@
 import Coordinate from "./Coordinate";
+import type Geometry from "./Geometry";
 
 export default class Point implements Geometry {
-  private coordinate?: Coordinate;
+  private coordinate: Coordinate;
 
-  constructor(coordinate?: Coordinate) {
-    this.coordinate = coordinate ;
+  constructor(coordinate: Coordinate = []) {
+    this.coordinate = coordinate ?? [];
   }
 
   getType(): string {
     return "Point";
+  }
+
+  isEmpty(): boolean {
+    return this.coordinate.length === 0;
   }
 
   getCoordinate(): Coordinate {
@@ -16,11 +21,10 @@ export default class Point implements Geometry {
   }
 
   x(): number {
-    return this.coordinate ? this.coordinate[0] : Number.NaN ;
+    return this.coordinate.length > 0 ? this.coordinate[0] : Number.NaN;
   }
 
   y(): number {
-    return this.coordinate ? this.coordinate[1] : Number.NaN ;
+    return this.coordinate.length > 1 ? this.coordinate[1] : Number.NaN;
   }
-
 }
