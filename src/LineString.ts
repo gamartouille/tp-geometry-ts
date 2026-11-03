@@ -1,4 +1,4 @@
-import type Geometry from "./Geometry";
+import type Geometry from "./Geometry.ts";
 import Point from "./Point";
 
 export default class LineString implements Geometry {
@@ -23,6 +23,11 @@ export default class LineString implements Geometry {
       return new Point([x, y]);
     });
     return new LineString(translatedPoints);
+  }
+
+  clone(): LineString {
+    const clonedPoints = this.points.map((point) => new Point([point.x(), point.y()]));
+    return new LineString(clonedPoints);
   }
 
   getNumPoints(): number {

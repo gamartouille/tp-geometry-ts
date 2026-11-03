@@ -1,5 +1,5 @@
 import Coordinate from "./Coordinate";
-import type Geometry from "./Geometry";
+import type Geometry from "./Geometry.ts";
 
 export default class Point implements Geometry {
   private coordinate: Coordinate;
@@ -20,6 +20,10 @@ export default class Point implements Geometry {
     const x = this.x() + dx;
     const y = this.y() + dy;
     return new Point([x, y]);
+  }
+  
+  clone(): Point {
+    return new Point([...this.coordinate]);
   }
 
   getCoordinate(): Coordinate {
