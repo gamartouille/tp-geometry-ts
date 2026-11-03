@@ -1,5 +1,6 @@
 import Coordinate from "./Coordinate";
 import type Geometry from "./Geometry.ts";
+import type GeometryVisitor from "./GeometryVisitor";
 
 export default class Point implements Geometry {
   private coordinate: Coordinate;
@@ -19,11 +20,15 @@ export default class Point implements Geometry {
   translate(dx: number, dy: number): Point {
     const x = this.x() + dx;
     const y = this.y() + dy;
-    return new Point([x, y]);
+    return new Point([ x, y]);
   }
   
   clone(): Point {
     return new Point([...this.coordinate]);
+  }
+
+  accept(visitor: GeometryVisitor): string {
+    return visitor.visitPoint(this);
   }
 
   getCoordinate(): Coordinate {

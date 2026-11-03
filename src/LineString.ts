@@ -1,4 +1,5 @@
 import type Geometry from "./Geometry.ts";
+import type GeometryVisitor from "./GeometryVisitor";
 import Point from "./Point";
 
 export default class LineString implements Geometry {
@@ -28,6 +29,10 @@ export default class LineString implements Geometry {
   clone(): LineString {
     const clonedPoints = this.points.map((point) => new Point([point.x(), point.y()]));
     return new LineString(clonedPoints);
+  }
+
+  accept(visitor: GeometryVisitor): string {
+    return visitor.visitLineString(this);
   }
 
   getNumPoints(): number {
