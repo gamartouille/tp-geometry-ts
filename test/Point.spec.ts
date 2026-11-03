@@ -16,6 +16,18 @@ describe("test Point", () => {
         expect(p.x()).to.equal(3.0);
         expect(p.y()).to.equal(4.0);
     });
+
+    it("returns an envelope containing the point", () => {
+        const envelope = new Point([3.0, 4.0]).getEnvelope();
+        expect(envelope.getXmin()).to.equal(3.0);
+        expect(envelope.getYmin()).to.equal(4.0);
+        expect(envelope.getXmax()).to.equal(3.0);
+        expect(envelope.getYmax()).to.equal(4.0);
+    });
+
+    it("returns an empty envelope for an empty point", () => {
+        expect(new Point().getEnvelope().isEmpty()).to.be.true;
+    });
 });
 
 describe("test LineString", () => {
@@ -35,5 +47,21 @@ describe("test LineString", () => {
         expect(line.getPointN(0)).to.equal(p1);
         expect(line.getPointN(1)).to.equal(p2);
     });
-});
 
+    it("returns the envelope containing all points", () => {
+        const line = new LineString([
+            new Point([3.0, 4.0]),
+            new Point([-1.0, 8.0]),
+            new Point([5.0, -2.0]),
+        ]);
+        const envelope = line.getEnvelope();
+        expect(envelope.getXmin()).to.equal(-1.0);
+        expect(envelope.getYmin()).to.equal(-2.0);
+        expect(envelope.getXmax()).to.equal(5.0);
+        expect(envelope.getYmax()).to.equal(8.0);
+    });
+
+    it("returns an empty envelope for an empty line", () => {
+        expect(new LineString().getEnvelope().isEmpty()).to.be.true;
+    });
+});

@@ -1,6 +1,8 @@
 import Coordinate from "./Coordinate";
 import type Geometry from "./Geometry.ts";
 import type GeometryVisitor from "./GeometryVisitor";
+import Enveloppe from "./Enveloppe";
+import EnveloppeBuilder from "./EnveloppeBuilder";
 
 export default class Point implements Geometry {
   private coordinate: Coordinate;
@@ -25,6 +27,15 @@ export default class Point implements Geometry {
   
   clone(): Point {
     return new Point([...this.coordinate]);
+  }
+
+  getEnvelope(): Enveloppe {
+    if (this.isEmpty()) {
+      return new Enveloppe([], []);
+    }
+    const builder = new EnveloppeBuilder();
+    builder.insert([this.x(), this.y(), this.x(), this.y()]);
+    return builder.build();
   }
 
   accept(visitor: GeometryVisitor): string {

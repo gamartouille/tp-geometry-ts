@@ -1,6 +1,8 @@
 import type Geometry from "./Geometry.ts";
 import type GeometryVisitor from "./GeometryVisitor";
 import Point from "./Point";
+import Enveloppe from "./Enveloppe";
+import EnveloppeBuilder from "./EnveloppeBuilder";
 
 export default class LineString implements Geometry {
   private points: Point[];
@@ -29,6 +31,29 @@ export default class LineString implements Geometry {
   clone(): LineString {
     const clonedPoints = this.points.map((point) => new Point([point.x(), point.y()]));
     return new LineString(clonedPoints);
+  }
+
+  getEnvelope(): Enveloppe {
+    if (this.isEmpty()) {
+      return new Enveloppe([], []);
+    }
+
+    const firstPoint = this.points[0];
+    let xmin = firstPoint.x();
+    let ymin = firstPoint.y();
+    let xmax = xmin;
+    let ymax = ymin;
+
+    for (const point of this.points.slice(1)) {
+      xmin = Math.min(xmin, point.x());
+      ymin = Math.min(ymin, point.y());
+      xmax = Math.max(xmax, point.x());
+      ymax = Math.max(ymax, point.y());
+    }
+
+    const builder = new EnveloppeBuilder();
+    builder.insert([xmin, ymin, xmax, ymax]);
+    return builder.build();
   }
 
   accept(visitor: GeometryVisitor): string {
