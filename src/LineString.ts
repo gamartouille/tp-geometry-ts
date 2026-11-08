@@ -1,13 +1,15 @@
-import type Geometry from "./Geometry.ts";
+import type Geometry from "./Geometry";
 import type GeometryVisitor from "./GeometryVisitor";
 import Point from "./Point";
 import Enveloppe from "./Enveloppe";
 import EnveloppeBuilder from "./EnveloppeBuilder";
+import AbstractGeometry from "./AbstractGeometry";
 
-export default class LineString implements Geometry {
+export default class LineString extends AbstractGeometry {
   private points: Point[];
 
   constructor(points: Point | Point[] = []) {
+    super();
     this.points = Array.isArray(points) ? points : points ? [points] : [];
   }
 

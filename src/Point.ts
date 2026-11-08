@@ -1,13 +1,15 @@
 import Coordinate from "./Coordinate";
-import type Geometry from "./Geometry.ts";
+import type Geometry from "./Geometry";
 import type GeometryVisitor from "./GeometryVisitor";
 import Enveloppe from "./Enveloppe";
 import EnveloppeBuilder from "./EnveloppeBuilder";
+import AbstractGeometry from "./AbstractGeometry";
 
-export default class Point implements Geometry {
+export default class Point extends AbstractGeometry {
   private coordinate: Coordinate;
 
   constructor(coordinate: Coordinate = []) {
+    super();
     this.coordinate = coordinate ?? [];
   }
 
@@ -22,9 +24,9 @@ export default class Point implements Geometry {
   translate(dx: number, dy: number): Point {
     const x = this.x() + dx;
     const y = this.y() + dy;
-    return new Point([ x, y]);
+    return new Point([x, y]);
   }
-  
+
   clone(): Point {
     return new Point([...this.coordinate]);
   }
