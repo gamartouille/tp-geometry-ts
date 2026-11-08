@@ -1,43 +1,19 @@
-import Geometry from "./Geometry";
-import LineString from "./LineString";
-import Point from "./Point";
+import type Geometry from "./Geometry";
 import type GeometryVisitor from "./GeometryVisitor";
+import WktVisitor from "./WktVisitor";
 
 export default class WktWriter implements GeometryVisitor {
+  private readonly visitor = new WktVisitor();
+
   write(geometry: Geometry): string {
-    return geometry.accept(this);
+    return this.visitor.write(geometry);
   }
 
-  visitPoint(point: Point): string {
-    return this.writePoint(point);
+  visitPoint(point: import("./Point").default): string {
+    return this.visitor.visitPoint(point);
   }
 
-  visitLineString(lineString: LineString): string {
-    return this.writeLineString(lineString);
-  }
-
-  private writePoint(point: Point): string {
-    if (point.isEmpty()) {
-      return "POINT EMPTY";
-    }
-    const coordinate = point.getCoordinate();
-    return `POINT(${coordinate[0]} ${coordinate[1]})`;
-  }
-
-  private writeLineString(lineString: LineString): string {
-    if (lineString.isEmpty()) {
-      return "LINESTRING EMPTY";
-    }
-    const points = lineString.getNumPoints();
-    const coordinates = [];
-    for (let i = 0; i < points; i++) {
-      const point = lineString.getPointN(i);
-      if (!point) {
-        throw new Error(`LineString point at index ${i} does not exist`);
-      }
-      const coordinate = point.getCoordinate();
-      coordinates.push(`${coordinate[0]} ${coordinate[1]}`);
-    }
-    return `LINESTRING(${coordinates.join(", ")})`;
+  visitLineString(lineString: import("./LineString").default): string {
+    return this.visitor.visitLineString(lineString);
   }
 }
